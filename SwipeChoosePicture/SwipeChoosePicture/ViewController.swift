@@ -28,6 +28,21 @@ class ViewController: UIViewController, MDCSwipeToChooseDelegate {
         // Here you can init your properties
     }
     
+    var like = ""
+    var percentGet:Float?
+    var likedGet :Int?
+    var dislikedGet:Int?
+    @IBAction func toSelfScoreClick(_ sender: Any) {
+        
+        getSelfScore()
+        
+    }
+    
+    
+    
+    
+    
+    
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -59,6 +74,7 @@ class ViewController: UIViewController, MDCSwipeToChooseDelegate {
         print("You couldn't decide on \(self.currentPerson.Name)");
     }
     
+    
     // This is called then a user swipes the view fully left or right.
     func view(_ view: UIView, wasChosenWith wasChosenWithDirection: MDCSwipeDirection) -> Void{
         
@@ -66,11 +82,15 @@ class ViewController: UIViewController, MDCSwipeToChooseDelegate {
         // and "LIKED" on swipes to the right.
         if(wasChosenWithDirection == MDCSwipeDirection.left){
             print("You noped: \(self.currentPerson.Name)")
+            like = "disliked"
         }
         else{
             
             print("You liked: \(self.currentPerson.Name)")
+            like = "liked"
         }
+        
+        postLikeOrNot(name: self.currentPerson.Name as String, photoId: Int(self.currentPerson.NumberOfPhotos), preference: like)
         
         // MDCSwipeToChooseView removes the view from the view hierarchy
         // after it is swiped (this behavior can be customized via the
@@ -103,7 +123,7 @@ class ViewController: UIViewController, MDCSwipeToChooseDelegate {
         // It would be trivial to download these from a web service
         // as needed, but for the purposes of this sample app we'll
         // simply store them in memory.
-        return [Person(name: "Finn", image: UIImage(named: "finn"), age: 21, sharedFriends: 3, sharedInterest: 4, photos: 5), Person(name: "Jake", image: UIImage(named: "jake"), age: 21, sharedFriends: 3, sharedInterest: 4, photos: 5), Person(name: "Fiona", image: UIImage(named: "fiona"), age: 21, sharedFriends: 3, sharedInterest: 4, photos: 5), Person(name: "P.Gumball", image: UIImage(named: "prince"), age: 21, sharedFriends: 3, sharedInterest: 4, photos: 5)]
+        return [Person(name: "Finn", image: UIImage(named: "girl1"), age: 21, sharedFriends: 3, sharedInterest: 4, photos: 1), Person(name: "Jake", image: UIImage(named: "girl2"), age: 21, sharedFriends: 3, sharedInterest: 4, photos: 2), Person(name: "Fiona", image: UIImage(named: "girl3"), age: 21, sharedFriends: 3, sharedInterest: 4, photos: 3), Person(name: "P.Gumball", image: UIImage(named: "girl4"), age: 21, sharedFriends: 3, sharedInterest: 4, photos: 4)]
         
     }
     func popPersonViewWithFrame(_ frame:CGRect) -> ChoosePersonView?{
@@ -168,6 +188,113 @@ class ViewController: UIViewController, MDCSwipeToChooseDelegate {
     }
     func likeFrontCardView() -> Void{
         self.frontCardView.mdc_swipe(MDCSwipeDirection.right)
+    }
+    
+    //post to server like or dislike
+    func postLikeOrNot(name:String, photoId:Int, preference:String){
+        let request = NSMutableURLRequest(url: NSURL(string: "https://iosphotoliked.herokuapp.com/photo/movies")! as URL)
+        
+        let session = URLSession.shared
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let params:[String : String] =
+            [
+                "name": name,
+                "photoId": "\(photoId)",
+                "preference": preference,
+                
+        ]
+        
+        print("params是\(params)")
+        
+        request.httpBody = try! JSONSerialization.data(withJSONObject: params, options: [])
+        
+        let task = session.dataTask(with: request as URLRequest) { data, response, error in
+            guard data != nil else {
+                print("no data found: \(error)")
+                return
+            }
+            
+            
+            
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                    
+                    print("拿到的回傳是\(json)")
+                    //成功會回傳{message = "Movie Added";}
+                    
+                    
+                } else {
+                    let jsonStr = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)    // No error thrown, but not NSDictionary
+                    print("Error could not parse JSON: \(jsonStr)")
+                }
+            } catch let parseError {
+                print(parseError)                                                          // Log the error thrown by `JSONObjectWithData`
+                let jsonStr = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                print("Error could not parse JSON: '\(jsonStr)'")
+            }
+        }
+        
+        task.resume()
+    }
+    
+    //get from server self score
+    func getSelfScore(){
+        let request = NSMutableURLRequest(url: NSURL(string: "https://iosphotoliked.herokuapp.com/photo/movies/Finn")! as URL)
+        
+        let session = URLSession.shared
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        
+        let task = session.dataTask(with: request as URLRequest) { data, response, error in
+            guard data != nil else {
+                print("no data found: \(error)")
+                return
+            }
+            
+            
+            
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                    
+                    print("get拿到的回傳是\(json)")
+                    self.percentGet = json.object(forKey: "percent") as? Float
+                    self.likedGet = json.object(forKey: "liked") as? Int
+                    self.dislikedGet = json.object(forKey: "disliked") as? Int
+                   
+                   self.performSegue(withIdentifier: "toSelfScore", sender: self)
+                    
+                } else {
+                       // No error thrown, but not NSDictionary
+                    let jsonStr = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                    print("Error could not parse JSON: '\(jsonStr)'")
+                    
+                   
+                    
+                    
+                
+                }
+            } catch let parseError {
+                print(parseError)                                                          // Log the error thrown by `JSONObjectWithData`
+                let jsonStr = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                print("Error could not parse JSON: '\(jsonStr)'")
+            }
+        }
+        
+        task.resume()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toSelfScore"{
+        let vc = segue.destination as! selfScore
+            vc.percentGet = self.percentGet
+            vc.likedGet = self.likedGet
+            vc.dislikedGet = self.dislikedGet
+        }
     }
 }
 

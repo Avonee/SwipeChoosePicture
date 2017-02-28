@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6DFCA793FB6F47DEAE262ECD /* Pods_SwipeChoosePicture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8E3517E97040883722ED999 /* Pods_SwipeChoosePicture.framework */; };
+		BE3BE8BF1E65C71900776001 /* selfScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3BE8BE1E65C71900776001 /* selfScore.swift */; };
 		BEF6B22E1E6488A5006CC5A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6B22D1E6488A5006CC5A0 /* AppDelegate.swift */; };
 		BEF6B2301E6488A5006CC5A0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6B22F1E6488A5006CC5A0 /* ViewController.swift */; };
 		BEF6B2331E6488A5006CC5A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BEF6B2311E6488A5006CC5A0 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE3BE8BE1E65C71900776001 /* selfScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = selfScore.swift; sourceTree = "<group>"; };
 		BEF6B22A1E6488A5006CC5A0 /* SwipeChoosePicture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwipeChoosePicture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF6B22D1E6488A5006CC5A0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BEF6B22F1E6488A5006CC5A0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				BEF6B22F1E6488A5006CC5A0 /* ViewController.swift */,
+				BE3BE8BE1E65C71900776001 /* selfScore.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 				TargetAttributes = {
 					BEF6B2291E6488A4006CC5A0 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 244D32V2TZ;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -257,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE3BE8BF1E65C71900776001 /* selfScore.swift in Sources */,
 				BEF6B2471E6488FC006CC5A0 /* ChoosePersonView.swift in Sources */,
 				BEF6B2301E6488A5006CC5A0 /* ViewController.swift in Sources */,
 				BEF6B2451E6488E8006CC5A0 /* ImageLabelView.swift in Sources */,
@@ -384,6 +389,7 @@
 			baseConfigurationReference = E3923C3F6D64EA38C63EF1C1 /* Pods-SwipeChoosePicture.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 244D32V2TZ;
 				INFOPLIST_FILE = SwipeChoosePicture/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appcoda.SwipeChoosePicture;
@@ -398,6 +404,7 @@
 			baseConfigurationReference = D428E02744DFC410965E0057 /* Pods-SwipeChoosePicture.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 244D32V2TZ;
 				INFOPLIST_FILE = SwipeChoosePicture/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appcoda.SwipeChoosePicture;
